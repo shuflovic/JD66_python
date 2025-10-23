@@ -1,43 +1,43 @@
-todos = []
+import pygame
+import sys
 
-while True:
-    print("\n--- TODO LIST ---")
-    print("1. Add task")
-    print("2. View tasks")
-    print("3. Remove task")
-    print("4. Exit")
+# Initialize pygame
+pygame.init()
+
+# Settings
+WINDOW_SIZE = 500
+BOARD_SIZE = 5
+SQUARE_SIZE = WINDOW_SIZE // BOARD_SIZE
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+GRAY = (200, 200, 200)
+
+# Create window
+screen = pygame.display.set_mode((WINDOW_SIZE, WINDOW_SIZE))
+pygame.display.set_caption("Board Game")
+clock = pygame.time.Clock()
+
+# Game loop
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
     
-    choice = input("Choose an option (1-4): ")
+    # Fill background
+    screen.fill(WHITE)
     
-    if choice == "1":
-        task = input("Enter a task: ")
-        todos.append(task)
-        print(f"Added: {task}")
+    # Draw 5x5 board
+    for row in range(BOARD_SIZE):
+        for col in range(BOARD_SIZE):
+            x = col * SQUARE_SIZE
+            y = row * SQUARE_SIZE
+            rect = pygame.Rect(x, y, SQUARE_SIZE, SQUARE_SIZE)
+            pygame.draw.rect(screen, BLACK, rect, 2)  # Border
+            pygame.draw.rect(screen, GRAY, rect)      # Fill
     
-    elif choice == "2":
-        if todos:
-            print("\nYour tasks:")
-            for i, task in enumerate(todos, 1):
-                print(f"  {i}. {task}")
-        else:
-            print("No tasks yet!")
-    
-    elif choice == "3":
-        if todos:
-            for i, task in enumerate(todos, 1):
-                print(f"  {i}. {task}")
-            num = int(input("Remove which task? (number): "))
-            if 0 < num <= len(todos):
-                removed = todos.pop(num - 1)
-                print(f"Removed: {removed}")
-            else:
-                print("Invalid number!")
-        else:
-            print("No tasks to remove!")
-    
-    elif choice == "4":
-        print("Bye!")
-        break
-    
-    else:
-        print("Invalid choice!")
+    pygame.display.flip()
+    clock.tick(60)
+
+pygame.quit()
+sys.exit()
